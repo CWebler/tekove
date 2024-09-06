@@ -1,0 +1,22 @@
+version: '3.9'
+
+services:
+  db:
+    image: postgres:latest
+    container_name: tekove_postgres
+    environment:
+      POSTGRES_USER: tekove
+      POSTGRES_PASSWORD: tekove123
+      POSTGRES_DB: tekove
+    volumes:
+      - dados_db:/var/lib/postgresql/data
+      - ./sqls/:/docker-entrypoint-initdb.d/
+    ports:
+      - "5432:5432"
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
+volumes:
+  dados_db:
