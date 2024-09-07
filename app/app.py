@@ -1,4 +1,4 @@
-from flask import Flask, jsonify
+from flask import Flask, jsonify, render_template, request
 import os
 import psycopg2
 
@@ -34,5 +34,30 @@ def get_funcionarios():
     conn.close()
     return jsonify(funcionarios)
 
+@app.route('/funcionarios_page')
+def get_funcionarios_page():
+    conn = get_db_connection()
+    cur = conn.cursor()
+    cur.execute('SELECT * FROM Funcionarios')
+    funcionarios = cur.fetchall()
+    cur.close()
+    conn.close()
+ 
+    return render_template("index.html", funcionarios=funcionarios)
+    
+@app.route('/search_funcionarios')
+def search_funcionarios():
+    query = request.args.get('search', None)
+    if len(query) < 2:
+        return ""
+        
+    conn = get_db_connection()
+    cur = conn.cursor()
+    cur.execute("SELECT * FROM Funcionarios WHERE nome ILIKE %s", ('%' + query + '%',))
+    funcionarios = cur.fetchall()
+    cur.close()
+    conn.close()
+    return render_template('partials/funcionarios_list.html', funcionarios=funcionarios)
+    
 if __name__ == '__main__':
     app.run(host='0.0.0.0')
