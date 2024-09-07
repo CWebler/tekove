@@ -74,5 +74,29 @@ def search_pacientes():
     conn.close()
     return render_template('partials/pacientes_list.html', funcionarios=funcionarios)
     
+@app.route('/agendar_consulta', methods=['POST'])
+def agendar_consulta():
+    funcionario_id = request.form['funcionario_id']
+    paciente_id = request.form['paciente_id']
+    date = request.form['date']
+    time = request.form['time']
+
+    conn = get_db_connection()
+    cur = conn.cursor()
+
+    insert_query = """
+    INSERT INTO Consultas (data, horario, status, funcionario_id, paciente_id) 
+    VALUES (%s, %s, %s, %s, %s)
+    """
+    cur.execute(insert_query, (
+        date, time, 'pendente', funcionario_id, paciente_id)
+    )
+
+    conn.commit()
+    cur.close()
+    conn.close()
+
+    return "OK"
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0')
