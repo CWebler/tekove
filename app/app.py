@@ -96,7 +96,7 @@ def agendar_consulta():
     cur.close()
     conn.close()
 
-    return "OK"
+    return render_template("partials/success.html")
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0')
