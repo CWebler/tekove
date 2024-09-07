@@ -44,10 +44,10 @@ def get_funcionarios_page():
     conn.close()
  
     return render_template("index.html", funcionarios=funcionarios)
-    
+
 @app.route('/search_funcionarios')
 def search_funcionarios():
-    query = request.args.get('search', None)
+    query = request.args.get('search_funcionarios', None)
     if len(query) < 2:
         return ""
         
@@ -57,7 +57,22 @@ def search_funcionarios():
     funcionarios = cur.fetchall()
     cur.close()
     conn.close()
+
     return render_template('partials/funcionarios_list.html', funcionarios=funcionarios)
+    
+@app.route('/search_pacientes')
+def search_pacientes():
+    query = request.args.get('search_pacientes', None)
+    if len(query) < 2:
+        return "" 
+        
+    conn = get_db_connection()
+    cur = conn.cursor()
+    cur.execute("SELECT * FROM Pacientes WHERE nome ILIKE %s", ('%' + query + '%',))
+    funcionarios = cur.fetchall()
+    cur.close()
+    conn.close()
+    return render_template('partials/pacientes_list.html', funcionarios=funcionarios)
     
 if __name__ == '__main__':
     app.run(host='0.0.0.0')

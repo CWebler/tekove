@@ -7,23 +7,37 @@
     <script src="https://unpkg.com/htmx.org@1.9.12"></script>
     <!-- Inclua o Tailwind CSS via CDN -->
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <script>
+        document.addEventListener('DOMContentLoaded', (event) => {
+            document.addEventListener('click', function (e) {
+                if (e.target && e.target.matches('.result-item-funcionarios')) {
+                    document.getElementById('search_funcionarios').value = e.target.innerText;
+                    document.getElementById('results_funcionarios').innerHTML = '';
+                }
+                if (e.target && e.target.matches('.result-item-pacientes')) {
+                    document.getElementById('search_pacientes').value = e.target.innerText;
+                    document.getElementById('results_pacientes').innerHTML = '';
+                }
+            });
+        });
+    </script>
 </head>
 <body class="bg-gray-100 p-6">
     <div class="max-w-2xl mx-auto bg-white p-8 rounded-xl shadow-md">
         <h1 class="text-2xl font-bold mb-6">Novo agendamento</h1>
         <div>
             <label class="text-xl font-semibold mb-4">Paciente</label>
-            <input type="text" id="search" name="search" placeholder="Buscar paciente..."
-                   hx-get="/search_funcionarios" hx-trigger="input changed delay:500ms" hx-target="#results2" hx-swap="innerHTML"
+            <input type="text" id="search_pacientes" name="search_pacientes" placeholder="Buscar paciente..."
+                   hx-get="/search_pacientes" hx-trigger="input changed delay:500ms" hx-target="#results_pacientes" hx-swap="innerHTML"
                    class="w-full p-2 border border-gray-300 rounded-md">
-                   <div id="results2" class="relative"></div>
+                   <div id="results_pacientes" class="relative"></div>
         </div>
         <div>
             <label class="text-xl font-semibold mb-4">Funcionário</label>
-            <input type="text" id="search" name="search" placeholder="Buscar funcionário..."
-                   hx-get="/search_funcionarios" hx-trigger="input changed delay:500ms" hx-target="#results" hx-swap="innerHTML"
+            <input type="text" id="search_funcionarios" name="search_funcionarios" placeholder="Buscar funcionário..."
+                   hx-get="/search_funcionarios" hx-trigger="input changed delay:500ms" hx-target="#results_funcionarios" hx-swap="innerHTML"
                    class="w-full p-2 border border-gray-300 rounded-md">
-                   <div id="results" class="relative"></div>
+                   <div id="results_funcionarios" class="relative"></div>
         </div>
 
         <h2 class="text-xl font-semibold mb-4 mt-6">Seleção de Data e Horário</h2>
