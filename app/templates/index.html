@@ -11,13 +11,21 @@
 <body class="bg-gray-100 p-6">
     <div class="max-w-2xl mx-auto bg-white p-8 rounded-xl shadow-md">
         <h1 class="text-2xl font-bold mb-6">Novo agendamento</h1>
-        <h2 class="text-xl font-semibold mb-4">Busca de Funcionários</h2>
-        <input type="text" id="search" name="search" placeholder="Buscar funcionário..."
-               hx-get="/search_funcionarios" hx-trigger="input changed delay:500ms" hx-target="#results" hx-swap="innerHTML"
-               class="w-full p-2 border border-gray-300 rounded-md mb-4">
-        <div id="results" class="mt-4">
-            <!-- Os resultados da busca serão inseridos aqui -->
+        <div>
+            <label class="text-xl font-semibold mb-4">Paciente</label>
+            <input type="text" id="search" name="search" placeholder="Buscar paciente..."
+                   hx-get="/search_funcionarios" hx-trigger="input changed delay:500ms" hx-target="#results2" hx-swap="innerHTML"
+                   class="w-full p-2 border border-gray-300 rounded-md">
+                   <div id="results2" class="relative"></div>
         </div>
+        <div>
+            <label class="text-xl font-semibold mb-4">Funcionário</label>
+            <input type="text" id="search" name="search" placeholder="Buscar funcionário..."
+                   hx-get="/search_funcionarios" hx-trigger="input changed delay:500ms" hx-target="#results" hx-swap="innerHTML"
+                   class="w-full p-2 border border-gray-300 rounded-md">
+                   <div id="results" class="relative"></div>
+        </div>
+
     </div>
 </body>
 </html>
