@@ -76,27 +76,29 @@ def search_pacientes():
     
 @app.route('/agendar_consulta', methods=['POST'])
 def agendar_consulta():
-    funcionario_id = request.form['funcionario_id']
-    paciente_id = request.form['paciente_id']
-    date = request.form['date']
-    time = request.form['time']
+    try:
+        funcionario_id = request.form['funcionario_id']
+        paciente_id = request.form['paciente_id']
+        date = request.form['date']
+        time = request.form['time']
 
-    conn = get_db_connection()
-    cur = conn.cursor()
+        conn = get_db_connection()
+        cur = conn.cursor()
 
-    insert_query = """
-    INSERT INTO Consultas (data, horario, status, funcionario_id, paciente_id) 
-    VALUES (%s, %s, %s, %s, %s)
-    """
-    cur.execute(insert_query, (
-        date, time, 'pendente', funcionario_id, paciente_id)
-    )
+        insert_query = """
+        INSERT INTO Consultas (data, horario, status, funcionario_id, paciente_id) 
+        VALUES (%s, %s, %s, %s, %s)
+        """
+        cur.execute(insert_query, (
+            date, time, 'pendente', funcionario_id, paciente_id)
+        )
 
-    conn.commit()
-    cur.close()
-    conn.close()
+        conn.commit()
+        cur.close()
+        conn.close()
 
-    return render_template("partials/success.html")
-
+        return render_template("partials/success.html")
+    except Exception as e:
+        return render_template("partials/erro.html", erro=e)
 if __name__ == '__main__':
     app.run(host='0.0.0.0')
