@@ -10,7 +10,8 @@ CREATE TABLE Pacientes (
     nome VARCHAR(100) NOT NULL,
     endereco VARCHAR(255),
     telefone VARCHAR(20),
-    data_nascimento DATE
+    data_nascimento DATE,
+    cartao_sus VARCHAR(20)
 );
 
 CREATE TABLE Consultas (
