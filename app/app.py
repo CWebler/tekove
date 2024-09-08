@@ -97,7 +97,7 @@ def agendar_consulta():
         cur.close()
         conn.close()
 
-        return render_template("partials/success.html")
+        return render_template("partials/success.html", mensagem="A consulta foi agendada com successo!")
     except Exception as e:
         return render_template("partials/erro.html", erro=e)
 
@@ -133,5 +133,32 @@ def listar_consultas():
 def cadastro_paciente():
     return render_template('cadastro_paciente.html')
 
+@app.route('/paciente/inserir', methods=['POST'])
+def insere_paciente():
+    nome = request.form['nome']
+    endereco = request.form.get('endereco')
+    telefone = request.form.get('telefone')
+    data_nascimento = request.form.get('data_nascimento')
+    cartao_sus = request.form.get('cartao_sus')
+
+    # Adicione o paciente ao banco de dados
+    conn = get_db_connection()
+    cur = conn.cursor()
+    cur.execute(
+        '''
+        INSERT INTO Pacientes (nome, endereco, telefone, data_nascimento, cartao_sus)
+        VALUES (%s, %s, %s, %s, %s)
+        ''', (
+            nome, endereco, telefone, data_nascimento, cartao_sus
+        )
+    )
+    conn.commit()
+    cur.close()
+    conn.close()
+
+
+    return render_template('partials/success.html', mensagem="Paciente cadastrado com sucesso!")
+
 if __name__ == '__main__':
-    app.run(host='0.0.0.0')
+    app.config['TEMPLATES_AUTO_RELOAD'] = True
+    app.run(host='0.0.0.0', debug=True)
