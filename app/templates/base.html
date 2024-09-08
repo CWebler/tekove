@@ -12,11 +12,13 @@
     <header class="bg-white shadow-md py-4">
         <div class="container mx-auto px-6 flex justify-between items-center">
             <h1 class="text-2xl font-bold"><a href="/dashboard">Tekove</a></h1>
-            <nav>
-                <ul class="flex space-x-4">
-                    <li><a href="/paciente/cadastro" class="text-blue-500 hover:underline">Cadastro</a></li>
-                </ul>
-            </nav>
+            <div class="relative">
+                <button class="bg-blue-500 text-white p-2 rounded focus:outline-none">Cadastro</button>
+                <div class="absolute right-0 mt-2 w-48 bg-white border border-gray-300 rounded shadow-lg hidden">
+                    <a href="/funcionario/cadastro" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Cadastro de Funcionários</a>
+                    <a href="/paciente/cadastro" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Cadastro de Pacientes</a>
+                </div>
+            </div>
         </div>
     </header>
 
@@ -24,5 +26,21 @@
     <main class="container mx-auto p-6">
         {% block content %}{% endblock %}
     </main>
+
+    <script>
+        // Script para mostrar/esconder o dropdown
+        document.querySelector('header .relative button').addEventListener('click', function() {
+            const dropdown = document.querySelector('header .relative .absolute');
+            dropdown.classList.toggle('hidden');
+        });
+
+        // Fechar o dropdown se clicar fora dele
+        document.addEventListener('click', function(event) {
+            const dropdown = document.querySelector('header .relative .absolute');
+            if (!event.target.closest('header .relative')) {
+                dropdown.classList.add('hidden');
+            }
+        });
+    </script>
 </body>
 </html>
