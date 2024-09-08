@@ -3,6 +3,7 @@ CREATE TABLE Funcionarios (
     nome VARCHAR(100) NOT NULL,
     email VARCHAR(100) NOT NULL UNIQUE,
     senha VARCHAR(100) NOT NULL
+    especialidade VARCHAR(100)
 );
 
 CREATE TABLE Pacientes (

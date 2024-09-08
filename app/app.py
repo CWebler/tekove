@@ -159,6 +159,34 @@ def insere_paciente():
 
     return render_template('partials/success.html', mensagem="Paciente cadastrado com sucesso!")
 
+@app.route('/funcionario/inserir', methods=['POST'])
+def inserir_funcionario():
+    nome = request.form['nome']
+    especialidade = request.form.get('especialidade')
+    email = request.form['email']
+    senha = request.form['senha']
+    conn = get_db_connection()
+    cur = conn.cursor()
+
+    # Adicione o funcionário ao banco de dados
+    cur.execute(
+        '''
+        INSERT INTO Funcionarios (nome, especialidade, email, senha)
+        VALUES (%s, %s, %s, %s)
+        ''', (
+            nome, especialidade, email, senha
+        )
+    )
+    conn.commit()
+    cur.close()
+    conn.close()
+
+    return render_template('partials/success.html', mensagem="Funcionário cadastrado com sucesso!")
+
+@app.route('/funcionario/cadastro', methods=['GET'])
+def cadastro_funcionario():
+    return render_template('cadastro_funcionario.html')
+
 if __name__ == '__main__':
     app.config['TEMPLATES_AUTO_RELOAD'] = True
     app.run(host='0.0.0.0', debug=True)
