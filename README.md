@@ -19,3 +19,7 @@ Tekove é um sistema de agendamento de consultas desenvolvido para postos de sa�
 
 - **Histórico de Consultas:**
   - Visualização do histórico de consultas passadas por pacientes e funcionários.
+
+## Licença
+
+Este projeto é licenciado sob a Licença MIT - veja o arquivo [LICENSE](LICENSE) para detalhes.
