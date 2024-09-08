@@ -22,6 +22,7 @@ def login_required(f):
     return decorated_function
 
 @app.route('/pacientes')
+@login_required
 def get_pacientes():
     conn = get_db_connection()
     cur = conn.cursor()
@@ -32,6 +33,7 @@ def get_pacientes():
     return jsonify(pacientes)
 
 @app.route('/funcionarios')
+@login_required
 def get_funcionarios():
     conn = get_db_connection()
     cur = conn.cursor()
@@ -42,6 +44,7 @@ def get_funcionarios():
     return jsonify(funcionarios)
 
 @app.route('/agendamento')
+@login_required
 def get_funcionarios_page():
     conn = get_db_connection()
     cur = conn.cursor()
@@ -53,6 +56,7 @@ def get_funcionarios_page():
     return render_template("index.html", funcionarios=funcionarios)
 
 @app.route('/search_funcionarios')
+@login_required
 def search_funcionarios():
     query = request.args.get('search_funcionarios', None)
     if len(query) < 2:
@@ -68,6 +72,7 @@ def search_funcionarios():
     return render_template('partials/funcionarios_list.html', funcionarios=funcionarios)
     
 @app.route('/search_pacientes')
+@login_required
 def search_pacientes():
     query = request.args.get('search_pacientes', None)
     if len(query) < 2:
@@ -82,6 +87,7 @@ def search_pacientes():
     return render_template('partials/pacientes_list.html', funcionarios=funcionarios)
     
 @app.route('/editar_paciente/<int:id>', methods=['POST'])
+@login_required
 def editar_paciente(id):
     nome = request.form['nome']
     endereco = request.form.get('endereco')
@@ -116,6 +122,7 @@ def editar_paciente(id):
     return render_template("partials/success.html", mensagem="Paciente atualizado com sucesso!")
 
 @app.route('/paciente/<int:id>', methods=['GET'])
+@login_required
 def buscar_paciente(id):
     conn = get_db_connection()
     cur = conn.cursor()
@@ -138,6 +145,7 @@ def buscar_paciente(id):
     return render_template('buscar_paciente.html', id=id, paciente=paciente)
 
 @app.route('/agendar_consulta', methods=['POST'])
+@login_required
 def agendar_consulta():
     try:
         funcionario_id = request.form['funcionario_id']
@@ -177,6 +185,7 @@ def index():
     return render_template('dashboard.html', consultas=consultas)
 
 @app.route('/listar_consultas', methods=['GET'])
+@login_required
 def listar_consultas():
     conn = get_db_connection()
     cur = conn.cursor()
@@ -194,10 +203,12 @@ def listar_consultas():
 
 
 @app.route('/paciente/cadastro', methods=['GET'])
+@login_required
 def cadastro_paciente():
     return render_template('cadastro_paciente.html')
 
 @app.route('/paciente/inserir', methods=['POST'])
+@login_required
 def insere_paciente():
     nome = request.form['nome']
     endereco = request.form.get('endereco')
@@ -224,6 +235,7 @@ def insere_paciente():
     return render_template('partials/success.html', mensagem="Paciente cadastrado com sucesso!")
 
 @app.route('/funcionario/inserir', methods=['POST'])
+@login_required
 def inserir_funcionario():
     nome = request.form['nome']
     especialidade = request.form.get('especialidade')
@@ -248,10 +260,12 @@ def inserir_funcionario():
     return render_template('partials/success.html', mensagem="Funcionário cadastrado com sucesso!")
 
 @app.route('/funcionario/cadastro', methods=['GET'])
+@login_required
 def cadastro_funcionario():
     return render_template('cadastro_funcionario.html')
     
 @app.route('/paciente/atualizar/<int:id>', methods=['POST'])
+@login_required
 def atualizar_paciente(id):
     nome = request.form['nome']
     cartao_sus = request.form['cartao_sus']
@@ -272,6 +286,7 @@ def atualizar_paciente(id):
     return render_template("partials/success.html", mensagem="Paciente alterado com sucesso!")
 
 @app.route('/funcionario/atualizar/<int:id>', methods=['POST'])
+@login_required
 def atualizar_funcionario(id):
     nome = request.form.get('nome')
     email = request.form.get('email')
@@ -293,14 +308,17 @@ def atualizar_funcionario(id):
 
 
 @app.route('/paciente/novo', methods=['POST'])
+@login_required
 def novo_paciente():
     return render_template('partials/form_paciente.html', paciente=None)
 
 @app.route('/funcionario/novo', methods=['POST'])
+@login_required
 def novo_funcionario():
     return render_template('partials/form_funcionario.html', paciente=None)
 
 @app.route('/funcionario/<int:id>', methods=['GET'])
+@login_required
 def buscar_funcionario(id):
     conn = get_db_connection()
     cur = conn.cursor()
@@ -324,6 +342,7 @@ def buscar_funcionario(id):
     return render_template('buscar_funcionario.html', id=id, funcionario=funcionario)
 
 @app.route('/funcionario/deletar/<int:id>', methods=['DELETE'])
+@login_required
 def deletar_funcionario(id):
     conn = get_db_connection()
     cur = conn.cursor()
@@ -335,6 +354,7 @@ def deletar_funcionario(id):
     return render_template("partials/success.html", mensagem="Funcionário deletado com sucesso!")
 
 @app.route('/paciente/deletar/<int:id>', methods=['DELETE'])
+@login_required
 def deletar_paciente(id):
     conn = get_db_connection()
     cur = conn.cursor()
