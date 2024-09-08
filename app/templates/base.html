@@ -1,47 +1,66 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{% block title %}Tekove{% endblock %}</title>
     <script src="https://unpkg.com/htmx.org@1.9.12"></script>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-</head>
-<body class="bg-gray-100">
+    <link
+      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body class="bg-gray-100">
     <!-- Header -->
     <header class="bg-white shadow-md py-4">
-        <div class="container mx-auto px-6 flex justify-between items-center">
-            <h1 class="text-2xl font-bold"><a href="/">Tekove</a></h1>
-            <div class="relative">
-                <button class="bg-blue-500 text-white p-2 rounded focus:outline-none">Gerenciar</button>
-                <div class="absolute right-0 mt-2 w-48 bg-white border border-gray-300 rounded shadow-lg hidden">
-                    <a href="/funcionario/cadastro" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Funcionários</a>
-                    <a href="/paciente/cadastro" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Pacientes</a>
-                    <a href="/logout" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Sair</a>
-                </div>
-            </div>
+      <div class="container mx-auto px-6 flex justify-between items-center">
+        <h1 class="text-2xl font-bold"><a href="/">Tekove</a></h1>
+        <div class="relative">
+          <button class="bg-blue-500 text-white p-2 rounded focus:outline-none">
+            Gerenciar
+          </button>
+          <div
+            class="absolute right-0 mt-2 w-48 bg-white border border-gray-300 rounded shadow-lg hidden"
+          >
+            <a
+              href="/funcionario/cadastro"
+              class="block px-4 py-2 text-gray-700 hover:bg-gray-100"
+              >Funcionários</a
+            >
+            <a
+              href="/paciente/cadastro"
+              class="block px-4 py-2 text-gray-700 hover:bg-gray-100"
+              >Pacientes</a
+            >
+            <a
+              href="/logout"
+              class="block px-4 py-2 text-gray-700 hover:bg-gray-100"
+              >Sair</a
+            >
+          </div>
         </div>
+      </div>
     </header>
 
     <!-- Main Content -->
-    <main class="container mx-auto p-6">
-        {% block content %}{% endblock %}
-    </main>
+    <main class="container mx-auto p-6">{% block content %}{% endblock %}</main>
 
     <script>
-        // Script para mostrar/esconder o dropdown
-        document.querySelector('header .relative button').addEventListener('click', function() {
-            const dropdown = document.querySelector('header .relative .absolute');
-            dropdown.classList.toggle('hidden');
+      // Script para mostrar/esconder o dropdown
+      document
+        .querySelector("header .relative button")
+        .addEventListener("click", function () {
+          const dropdown = document.querySelector("header .relative .absolute");
+          dropdown.classList.toggle("hidden");
         });
 
-        // Fechar o dropdown se clicar fora dele
-        document.addEventListener('click', function(event) {
-            const dropdown = document.querySelector('header .relative .absolute');
-            if (!event.target.closest('header .relative')) {
-                dropdown.classList.add('hidden');
-            }
-        });
+      // Fechar o dropdown se clicar fora dele
+      document.addEventListener("click", function (event) {
+        const dropdown = document.querySelector("header .relative .absolute");
+        if (!event.target.closest("header .relative")) {
+          dropdown.classList.add("hidden");
+        }
+      });
     </script>
-</body>
+  </body>
 </html>

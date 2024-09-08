@@ -1,63 +1,97 @@
-{% extends "base.html" %}
-
-{% block title %}Cadastro de Pacientes{% endblock %}
-
+{% extends "base.html" %} {% block title %}Cadastro de Pacientes{% endblock %}
 {% block content %}
 
 <script>
-    document.addEventListener('DOMContentLoaded', (event) => {
-        document.addEventListener('click', function (e) {
-            if (e.target && e.target.matches('.result-item-pacientes')) {
-                document.getElementById('paciente_id').value = e.target.dataset.id;
+  document.addEventListener("DOMContentLoaded", (event) => {
+    document.addEventListener("click", function (e) {
+      if (e.target && e.target.matches(".result-item-pacientes")) {
+        document.getElementById("paciente_id").value = e.target.dataset.id;
 
-                document.getElementById('search_pacientes').value = e.target.innerText;
-                document.getElementById('results_pacientes').innerHTML = '';
+        document.getElementById("search_pacientes").value = e.target.innerText;
+        document.getElementById("results_pacientes").innerHTML = "";
 
-                document.getElementById('fetch_paciente_form').setAttribute('hx-get', `/paciente/${e.target.dataset.id}`);
-                document.getElementById('fetch_paciente_form').action = `/paciente/${e.target.dataset.id}`;
+        document
+          .getElementById("fetch_paciente_form")
+          .setAttribute("hx-get", `/paciente/${e.target.dataset.id}`);
+        document.getElementById("fetch_paciente_form").action =
+          `/paciente/${e.target.dataset.id}`;
 
-                htmx.process(document.body);
+        htmx.process(document.body);
 
-                document.getElementById('fetch_paciente_form').dispatchEvent(new Event('submit', { bubbles: true, cancelable: true }));
-            }
-        });
-        
-        document.getElementById('clear_search').addEventListener('click', function () {
-            document.getElementById('search_pacientes').value = '';
-            document.getElementById('results_pacientes').innerHTML = '';
-            document.getElementById('paciente_id').value = '';
-
-            // Clear form fields
-            const form = document.getElementById('form');
-            form.reset();
-        });
+        document
+          .getElementById("fetch_paciente_form")
+          .dispatchEvent(
+            new Event("submit", { bubbles: true, cancelable: true }),
+          );
+      }
     });
+
+    document
+      .getElementById("clear_search")
+      .addEventListener("click", function () {
+        document.getElementById("search_pacientes").value = "";
+        document.getElementById("results_pacientes").innerHTML = "";
+        document.getElementById("paciente_id").value = "";
+
+        // Clear form fields
+        const form = document.getElementById("form");
+        form.reset();
+      });
+  });
 </script>
 
 <div class="bg-white p-8 rounded-xl shadow-md">
-    <h1 class="text-2xl font-bold mb-6">Gerenciamento de Pacientes</h1>
-    <div class="flex items-center space-x-2 mb-4">
-        <div class="flex-grow">
-            <label class="text-xl font-semibold mb-4 block">Pesquisar</label>
-            <input type="hidden" id="paciente_id" name="paciente_id" />
-            <input type="text" id="search_pacientes" name="search_pacientes" placeholder="Buscar paciente..."
-                   hx-get="/search_pacientes" hx-trigger="input changed delay:500ms" hx-target="#results_pacientes" hx-swap="innerHTML"
-                   class="searchbox w-full p-2 border border-gray-300 rounded-md">
-            <div id="results_pacientes" class="relative mt-2"></div>
-        </div>
-        <form id="clear_form" hx-post="/paciente/novo" hx-target="#patient_form_container" hx-swap="innerHTML" class="flex items-center">
-            <button id="clear_search" type="submit" class="bg-gray-500 text-white p-2 rounded focus:outline-none">X</button>
-        </form>
+  <h1 class="text-2xl font-bold mb-6">Gerenciamento de Pacientes</h1>
+  <div class="flex items-center space-x-2 mb-4">
+    <div class="flex-grow">
+      <label class="text-xl font-semibold mb-4 block">Pesquisar</label>
+      <input type="hidden" id="paciente_id" name="paciente_id" />
+      <input
+        type="text"
+        id="search_pacientes"
+        name="search_pacientes"
+        placeholder="Buscar paciente..."
+        hx-get="/search_pacientes"
+        hx-trigger="input changed delay:500ms"
+        hx-target="#results_pacientes"
+        hx-swap="innerHTML"
+        class="searchbox w-full p-2 border border-gray-300 rounded-md"
+      />
+      <div id="results_pacientes" class="relative mt-2"></div>
     </div>
+    <form
+      id="clear_form"
+      hx-post="/paciente/novo"
+      hx-target="#patient_form_container"
+      hx-swap="innerHTML"
+      class="flex items-center"
+    >
+      <button
+        id="clear_search"
+        type="submit"
+        class="bg-gray-500 text-white p-2 rounded focus:outline-none"
+      >
+        X
+      </button>
+    </form>
+  </div>
 
-    <hr class="w-48 h-1 mx-auto my-4 bg-gray-100 border-0 rounded md:my-10 dark:bg-gray-700">
+  <hr
+    class="w-48 h-1 mx-auto my-4 bg-gray-100 border-0 rounded md:my-10 dark:bg-gray-700"
+  />
 
-    <form id="fetch_paciente_form" hx-get="" hx-trigger="submit" hx-target="#patient_form_container" hx-swap="innerHTML"></form>
+  <form
+    id="fetch_paciente_form"
+    hx-get=""
+    hx-trigger="submit"
+    hx-target="#patient_form_container"
+    hx-swap="innerHTML"
+  ></form>
 
-    <div id="patient_form_container">
-        {% include 'partials/form_paciente.html' %}
-    </div>
+  <div id="patient_form_container">
+    {% include 'partials/form_paciente.html' %}
+  </div>
 
-    <div id="result" class="mt-4"></div>
+  <div id="result" class="mt-4"></div>
 </div>
 {% endblock %}

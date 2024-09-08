@@ -1,67 +1,91 @@
-{% extends "base.html" %}
-
-{% block title %}Dashboard{% endblock %}
-
-{% block content %}
+{% extends "base.html" %} {% block title %}Dashboard{% endblock %} {% block
+content %}
 
 <script>
-        document.addEventListener('DOMContentLoaded', (event) => {
-            document.addEventListener('click', function (e) {
-                if (e.target && e.target.matches('.result-item-funcionarios')) {
-                    document.getElementById('funcionario_id').value = e.target.dataset.id;
-                    document.getElementById('search_funcionarios').value = e.target.innerText;
-                    document.getElementById('results_funcionarios').innerHTML = '';
-                }
-                if (e.target && e.target.matches('.result-item-pacientes')) {
-                    document.getElementById('paciente_id').value = e.target.dataset.id;
+  document.addEventListener("DOMContentLoaded", (event) => {
+    document.addEventListener("click", function (e) {
+      if (e.target && e.target.matches(".result-item-funcionarios")) {
+        document.getElementById("funcionario_id").value = e.target.dataset.id;
+        document.getElementById("search_funcionarios").value =
+          e.target.innerText;
+        document.getElementById("results_funcionarios").innerHTML = "";
+      }
+      if (e.target && e.target.matches(".result-item-pacientes")) {
+        document.getElementById("paciente_id").value = e.target.dataset.id;
 
-                    document.getElementById('search_pacientes').value = e.target.innerText;
-                    document.getElementById('results_pacientes').innerHTML = '';
-                }
-            });
-        });
-    </script> 
+        document.getElementById("search_pacientes").value = e.target.innerText;
+        document.getElementById("results_pacientes").innerHTML = "";
+      }
+    });
+  });
+</script>
 
-    <main class="container mx-auto p-6">
+<main class="container mx-auto p-6">
+  <div class="max-w-2xl mx-auto bg-white p-8 rounded-xl shadow-md">
+    <h1 class="text-2xl font-bold mb-6">Novo agendamento</h1>
+    <form id="form" hx-post="/agendar_consulta" hx-target="#result">
+      <div>
+        <label class="text-xl font-semibold mb-4">Paciente</label>
+        <input type="hidden" id="paciente_id" name="paciente_id" />
+        <input
+          type="text"
+          id="search_pacientes"
+          name="search_pacientes"
+          placeholder="Buscar paciente..."
+          hx-get="/search_pacientes"
+          hx-trigger="input changed delay:500ms"
+          hx-target="#results_pacientes"
+          hx-swap="innerHTML"
+          class="w-full p-2 border border-gray-300 rounded-md"
+        />
+        <div id="results_pacientes" class="relative"></div>
+      </div>
+      <div>
+        <label class="text-xl font-semibold mb-4">Funcionário</label>
+        <input type="hidden" id="funcionario_id" name="funcionario_id" />
 
-    <div class="max-w-2xl mx-auto bg-white p-8 rounded-xl shadow-md">
-        <h1 class="text-2xl font-bold mb-6">Novo agendamento</h1>
-        <form id="form" hx-post="/agendar_consulta" hx-target="#result">
+        <input
+          type="text"
+          id="search_funcionarios"
+          name="search_funcionarios"
+          placeholder="Buscar funcionário..."
+          hx-get="/search_funcionarios"
+          hx-trigger="input changed delay:500ms"
+          hx-target="#results_funcionarios"
+          hx-swap="innerHTML"
+          class="w-full p-2 border border-gray-300 rounded-md"
+        />
+        <div id="results_funcionarios" class="relative"></div>
+      </div>
 
-        <div>
-            <label class="text-xl font-semibold mb-4">Paciente</label>
-            <input type="hidden" id="paciente_id" name="paciente_id" />
-            <input type="text" id="search_pacientes" name="search_pacientes" placeholder="Buscar paciente..."
-                   hx-get="/search_pacientes" hx-trigger="input changed delay:500ms" hx-target="#results_pacientes" hx-swap="innerHTML"
-                   class="w-full p-2 border border-gray-300 rounded-md">
-                   <div id="results_pacientes" class="relative"></div>
-        </div>
-        <div>
-            <label class="text-xl font-semibold mb-4">Funcionário</label>
-            <input type="hidden" id="funcionario_id" name="funcionario_id" />
+      <h2 class="text-xl font-semibold mb-4 mt-6">Seleção de Data e Horário</h2>
+      <label for="date" class="block text-gray-700">Data:</label>
+      <input
+        type="date"
+        id="date"
+        name="date"
+        class="w-full p-2 border border-gray-300 rounded-md mb-4"
+      />
 
-            <input type="text" id="search_funcionarios" name="search_funcionarios" placeholder="Buscar funcionário..."
-                   hx-get="/search_funcionarios" hx-trigger="input changed delay:500ms" hx-target="#results_funcionarios" hx-swap="innerHTML"
-                   class="w-full p-2 border border-gray-300 rounded-md">
-                   <div id="results_funcionarios" class="relative"></div>
-        </div>
+      <label class="block text-gray-700">Horário:</label>
+      <div class="flex items-center mb-4">
+        <input type="radio" id="time8" name="time" value="8:00" class="mr-2" />
+        <label for="time8" class="mr-4">8:00</label>
+        <input
+          type="radio"
+          id="time13"
+          name="time"
+          value="13:00"
+          class="mr-2"
+        />
+        <label for="time13">13:00</label>
+      </div>
 
-        <h2 class="text-xl font-semibold mb-4 mt-6">Seleção de Data e Horário</h2>
-        <label for="date" class="block text-gray-700">Data:</label>
-        <input type="date" id="date" name="date" class="w-full p-2 border border-gray-300 rounded-md mb-4">
-
-        <label class="block text-gray-700">Horário:</label>
-        <div class="flex items-center mb-4">
-            <input type="radio" id="time8" name="time" value="8:00" class="mr-2">
-            <label for="time8" class="mr-4">8:00</label>
-            <input type="radio" id="time13" name="time" value="13:00" class="mr-2">
-            <label for="time13">13:00</label>
-        </div>
-
-        <button type="submit" class="bg-blue-500 text-white p-2 rounded-md">Agendar</button>
-        </form>
-        <div id="result"></div>
-    </div>
-    </main>
+      <button type="submit" class="bg-blue-500 text-white p-2 rounded-md">
+        Agendar
+      </button>
+    </form>
+    <div id="result"></div>
+  </div>
+</main>
 {% endblock %}
-    

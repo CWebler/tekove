@@ -14,16 +14,15 @@
         document
           .getElementById("fetch_funcionario_form")
           .setAttribute("hx-get", `/funcionario/${e.target.dataset.id}`);
-        document.getElementById(
-          "fetch_funcionario_form"
-        ).action = `/funcionario/${e.target.dataset.id}`;
+        document.getElementById("fetch_funcionario_form").action =
+          `/funcionario/${e.target.dataset.id}`;
 
         htmx.process(document.body);
 
         document
           .getElementById("fetch_funcionario_form")
           .dispatchEvent(
-            new Event("submit", { bubbles: true, cancelable: true })
+            new Event("submit", { bubbles: true, cancelable: true }),
           );
       }
     });
@@ -81,7 +80,7 @@
   <hr
     class="w-48 h-1 mx-auto my-4 bg-gray-100 border-0 rounded md:my-10 dark:bg-gray-700"
   />
-  
+
   <form
     id="fetch_funcionario_form"
     hx-get=""
@@ -91,7 +90,7 @@
   ></form>
 
   <div id="patient_form_container">
-   {% include 'partials/form_funcionario.html' %}
+    {% include 'partials/form_funcionario.html' %}
   </div>
 
   <div id="result" class="mt-4"></div>
