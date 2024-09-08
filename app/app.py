@@ -127,5 +127,11 @@ def listar_consultas():
     consultas = cur.fetchall()
     
     return render_template('partials/listar_consultas.html', consultas=consultas)
+
+
+@app.route('/paciente/cadastro', methods=['GET'])
+def cadastro_paciente():
+    return render_template('cadastro_paciente.html')
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0')

@@ -1,13 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lista de Funcionários</title>
-    <script src="https://unpkg.com/htmx.org@1.9.12"></script>
-    <!-- Inclua o Tailwind CSS via CDN -->
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <script>
+{% extends "base.html" %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+
+<script>
         document.addEventListener('DOMContentLoaded', (event) => {
             document.addEventListener('click', function (e) {
                 if (e.target && e.target.matches('.result-item-funcionarios')) {
@@ -23,19 +20,8 @@
                 }
             });
         });
-    </script>
-</head>
-<body class="bg-gray-100 p-6">
-    <header class="bg-white shadow-md py-4">
-        <div class="container mx-auto px-6 flex justify-between items-center">
-            <h1 class="text-2xl font-bold"><a href="/dashboard">Tekove</a></h1>
-            <nav>
-                <ul class="flex space-x-4">
-                    <li><a href="/cadastro" class="text-blue-500 hover:underline">Cadastro</a></li>
-                </ul>
-            </nav>
-        </div>
-    </header>
+    </script> 
+
     <main class="container mx-auto p-6">
 
     <div class="max-w-2xl mx-auto bg-white p-8 rounded-xl shadow-md">
@@ -77,5 +63,5 @@
         <div id="result"></div>
     </div>
     </main>
-</body>
-</html>
+{% endblock %}
+    
