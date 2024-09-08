@@ -1,8 +1,10 @@
-from flask import Flask, jsonify, render_template, request
+from flask import Flask, jsonify, render_template, request, redirect, session, url_for, flash
 import os
 import psycopg2
+from functools import wraps
 
 app = Flask(__name__)
+app.secret_key = os.environ.get('SECRET_KEY', 'alterar')
 
 DATABASE_URL = os.environ.get('DATABASE_URL')
 
@@ -10,9 +12,14 @@ def get_db_connection():
     conn = psycopg2.connect(DATABASE_URL)
     return conn
 
-@app.route('/')
-def index():
-    return jsonify({"message": "Welcome to Tekove!"})
+def login_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if 'funcionario_id' not in session:
+            flash('Você precisa estar logado para acessar esta página.', 'warning')
+            return redirect(url_for('login'))
+        return f(*args, **kwargs)
+    return decorated_function
 
 @app.route('/pacientes')
 def get_pacientes():
@@ -158,8 +165,9 @@ def agendar_consulta():
         return render_template("partials/erro.html", erro=e)
 
 
-@app.route('/dashboard')
-def dashboard():        
+@app.route('/')
+@login_required
+def index():        
     conn = get_db_connection()
     cur = conn.cursor()
     cur.execute("SELECT * FROM Consultas")
@@ -336,6 +344,36 @@ def deletar_paciente(id):
     conn.close()
 
     return render_template("partials/success.html", mensagem="Paciente deletado com sucesso!")
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        email = request.form['email']
+        senha = request.form['senha']
+
+        conn = get_db_connection()
+        cur = conn.cursor()
+        cur.execute('SELECT * FROM Funcionarios WHERE email = %s', (email,))
+        funcionario = cur.fetchone()
+        cur.close()
+        conn.close()
+
+        if funcionario and funcionario[3] == senha:
+            session['funcionario_id'] = funcionario[0]
+            flash('Login realizado com sucesso!', 'success')
+            return redirect(url_for('index'))
+        else:
+            flash('Email ou senha incorretos!', 'danger')
+
+    return render_template('login.html')
+
+@app.route('/logout')
+@login_required
+def logout():
+    session.pop('funcionario_id', None)
+    flash('Você saiu da sua conta.', 'info')
+    return redirect(url_for('login'))
+
 if __name__ == '__main__':
     app.config['TEMPLATES_AUTO_RELOAD'] = True
     app.run(host='0.0.0.0', debug=True)
