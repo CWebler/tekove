@@ -1,0 +1,24 @@
+<table class="table-auto w-full">
+    <thead>
+        <tr class="bg-gray-200">
+            <th class="px-4 py-2">ID</th>
+            <th class="px-4 py-2">Data</th>
+            <th class="px-4 py-2">Horário</th>
+            <th class="px-4 py-2">Status</th>
+            <th class="px-4 py-2">Funcionário</th>
+            <th class="px-4 py-2">Paciente</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for consulta in consultas %}
+        <tr>
+            <td class="border px-4 py-2">{{ consulta[0] }}</td>
+            <td class="border px-4 py-2">{{ consulta[1] }}</td>
+            <td class="border px-4 py-2">{{ consulta[2] }}</td>
+            <td class="border px-4 py-2">{{ consulta[3] }}</td>
+            <td class="border px-4 py-2">{{ consulta[4] }}</td>
+            <td class="border px-4 py-2">{{ consulta[5] }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>

@@ -100,5 +100,32 @@ def agendar_consulta():
         return render_template("partials/success.html")
     except Exception as e:
         return render_template("partials/erro.html", erro=e)
+
+
+@app.route('/dashboard')
+def dashboard():        
+    conn = get_db_connection()
+    cur = conn.cursor()
+    cur.execute("SELECT * FROM Consultas")
+    consultas = cur.fetchall()
+    cur.close()
+    conn.close()
+    return render_template('dashboard.html', consultas=consultas)
+
+@app.route('/listar_consultas', methods=['GET'])
+def listar_consultas():
+    conn = get_db_connection()
+    cur = conn.cursor()
+    cur.execute(
+        '''
+        SELECT c.id, c.data, c.horario, c.status, f.nome AS funcionario_nome, p.nome AS paciente_nome
+        FROM Consultas c
+        JOIN Funcionarios f ON c.funcionario_id = f.id
+        JOIN Pacientes p ON c.paciente_id = p.id
+        '''
+    )
+    consultas = cur.fetchall()
+    
+    return render_template('partials/listar_consultas.html', consultas=consultas)
 if __name__ == '__main__':
     app.run(host='0.0.0.0')

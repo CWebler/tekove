@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <script src="https://unpkg.com/htmx.org@1.9.12"></script>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100 p-6">
+    <div class="max-w-2xl mx-auto bg-white p-8 rounded-xl shadow-md">
+        <h1 class="text-2xl font-bold mb-6">Dashboard</h1>
+        <a href="/agendamento" class="bg-blue-500 text-white p-2 rounded-md">Novo agendamento</a>
+
+        <div id="consultas" hx-get="/listar_consultas" hx-trigger="load" hx-target="#consultas" hx-swap="innerHTML"></div>
+    </div>
+</body>
+</html>
