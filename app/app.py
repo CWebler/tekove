@@ -34,7 +34,7 @@ def get_funcionarios():
     conn.close()
     return jsonify(funcionarios)
 
-@app.route('/funcionarios_page')
+@app.route('/agendamento')
 def get_funcionarios_page():
     conn = get_db_connection()
     cur = conn.cursor()
