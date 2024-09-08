@@ -315,6 +315,27 @@ def buscar_funcionario(id):
     
     return render_template('buscar_funcionario.html', id=id, funcionario=funcionario)
 
+@app.route('/funcionario/deletar/<int:id>', methods=['DELETE'])
+def deletar_funcionario(id):
+    conn = get_db_connection()
+    cur = conn.cursor()
+    cur.execute('DELETE FROM Funcionarios WHERE id = %s', (id,))
+    conn.commit()
+    cur.close()
+    conn.close()
+
+    return render_template("partials/success.html", mensagem="Funcionário deletado com sucesso!")
+
+@app.route('/paciente/deletar/<int:id>', methods=['DELETE'])
+def deletar_paciente(id):
+    conn = get_db_connection()
+    cur = conn.cursor()
+    cur.execute('DELETE FROM Pacientes WHERE id = %s', (id,))
+    conn.commit()
+    cur.close()
+    conn.close()
+
+    return render_template("partials/success.html", mensagem="Paciente deletado com sucesso!")
 if __name__ == '__main__':
     app.config['TEMPLATES_AUTO_RELOAD'] = True
     app.run(host='0.0.0.0', debug=True)

@@ -42,7 +42,7 @@
             <input type="hidden" id="paciente_id" name="paciente_id" />
             <input type="text" id="search_pacientes" name="search_pacientes" placeholder="Buscar paciente..."
                    hx-get="/search_pacientes" hx-trigger="input changed delay:500ms" hx-target="#results_pacientes" hx-swap="innerHTML"
-                   class="w-full p-2 border border-gray-300 rounded-md">
+                   class="searchbox w-full p-2 border border-gray-300 rounded-md">
             <div id="results_pacientes" class="relative mt-2"></div>
         </div>
         <form id="clear_form" hx-post="/paciente/novo" hx-target="#patient_form_container" hx-swap="innerHTML" class="flex items-center">

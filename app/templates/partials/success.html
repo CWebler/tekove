@@ -2,5 +2,6 @@
     <span class="font-medium"> {{ mensagem }}</span>
   </div>
   <script>
-    document.getElementById("form").reset()
+    document.getElementById("clear_form").dispatchEvent(new Event('submit', { bubbles: true, cancelable: true }));
+    document.getElementsByClassName("searchbox")[0].value = ''
   </script>
