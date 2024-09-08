@@ -263,6 +263,10 @@ def atualizar_paciente(id):
     conn.close()
     return render_template("partials/success.html", mensagem="Paciente alterado com sucesso!")
 
+@app.route('/paciente/novo', methods=['POST'])
+def novo_paciente():
+    return render_template('partials/form_paciente.html', paciente=None)
+
 if __name__ == '__main__':
     app.config['TEMPLATES_AUTO_RELOAD'] = True
     app.run(host='0.0.0.0', debug=True)
