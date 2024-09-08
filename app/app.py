@@ -74,6 +74,62 @@ def search_pacientes():
     conn.close()
     return render_template('partials/pacientes_list.html', funcionarios=funcionarios)
     
+@app.route('/editar_paciente/<int:id>', methods=['POST'])
+def editar_paciente(id):
+    nome = request.form['nome']
+    endereco = request.form.get('endereco')
+    telefone = request.form.get('telefone')
+    data_nascimento = request.form.get('data_nascimento')
+    cartao_sus = request.form.get('cartao_sus')
+
+    conn = get_db_connection()
+    cur = conn.cursor()
+    cur.execute(
+        '''
+        UPDATE Pacientes
+        SET nome = %s,
+            endereco = %s,
+            telefone = %s,
+            data_nascimento = %s,
+            cartao_sus = %s
+        WHERE id = %s
+        ''', (
+            nome,
+            endereco,
+            telefone,
+            data_nascimento,
+            cartao_sus,
+            id
+        )
+    )
+    conn.commit()
+    cur.close()
+    conn.close()
+
+    return render_template("partials/success.html", mensagem="Paciente atualizado com sucesso!")
+
+@app.route('/paciente/<int:id>', methods=['GET'])
+def buscar_paciente(id):
+    conn = get_db_connection()
+    cur = conn.cursor()
+    cur.execute(
+        'SELECT * FROM Pacientes WHERE id = %s',
+        (id,)
+    )
+    paciente = cur.fetchone()
+ 
+    if paciente is None:
+        flash('Paciente não encontrado!')
+        return redirect(url_for('index'))  # Redirecionar para uma página de lista ou inicial
+    paciente = {
+            'nome': paciente[1],
+            'endereco': paciente[2],
+            'telefone': paciente[3],
+            'data_nascimento': paciente[4],
+            'cartao_sus': paciente[5],
+        }
+    return render_template('buscar_paciente.html', id=id, paciente=paciente)
+
 @app.route('/agendar_consulta', methods=['POST'])
 def agendar_consulta():
     try:
@@ -186,6 +242,26 @@ def inserir_funcionario():
 @app.route('/funcionario/cadastro', methods=['GET'])
 def cadastro_funcionario():
     return render_template('cadastro_funcionario.html')
+    
+@app.route('/paciente/atualizar/<int:id>', methods=['POST'])
+def atualizar_paciente(id):
+    nome = request.form['nome']
+    cartao_sus = request.form['cartao_sus']
+    endereco = request.form['endereco']
+    telefone = request.form['telefone']
+    data_nascimento = request.form['data_nascimento']
+    
+    conn = get_db_connection()
+    cur = conn.cursor()
+    cur.execute('''
+        UPDATE Pacientes
+        SET nome = %s, cartao_sus = %s, endereco = %s, telefone = %s, data_nascimento = %s
+        WHERE id = %s
+    ''', (nome, cartao_sus, endereco, telefone, data_nascimento, id))
+    conn.commit()
+    cur.close()
+    conn.close()
+    return render_template("partials/success.html", mensagem="Paciente alterado com sucesso!")
 
 if __name__ == '__main__':
     app.config['TEMPLATES_AUTO_RELOAD'] = True
