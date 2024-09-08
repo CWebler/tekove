@@ -263,9 +263,57 @@ def atualizar_paciente(id):
     conn.close()
     return render_template("partials/success.html", mensagem="Paciente alterado com sucesso!")
 
+@app.route('/funcionario/atualizar/<int:id>', methods=['POST'])
+def atualizar_funcionario(id):
+    nome = request.form.get('nome')
+    email = request.form.get('email')
+    senha = request.form.get('senha')
+    especialidade = request.form.get('especialidade')
+
+    conn = get_db_connection()
+    cur = conn.cursor()
+    cur.execute('''
+        UPDATE Funcionarios
+        SET nome = %s, email = %s, senha = %s, especialidade = %s
+        WHERE id = %s
+    ''', (nome, email, senha, especialidade, id))
+    conn.commit()
+    cur.close()
+    conn.close()
+
+    return render_template("partials/success.html", mensagem="Funcionário atualizado com sucesso!")
+
+
 @app.route('/paciente/novo', methods=['POST'])
 def novo_paciente():
     return render_template('partials/form_paciente.html', paciente=None)
+
+@app.route('/funcionario/novo', methods=['POST'])
+def novo_funcionario():
+    return render_template('partials/form_funcionario.html', paciente=None)
+
+@app.route('/funcionario/<int:id>', methods=['GET'])
+def buscar_funcionario(id):
+    conn = get_db_connection()
+    cur = conn.cursor()
+    cur.execute(
+        'SELECT * FROM Funcionarios WHERE id = %s',
+        (id,)
+    )
+    funcionario = cur.fetchone()
+ 
+    if funcionario is None:
+        flash('Funcionário não encontrado!')
+        return redirect(url_for('index'))  # Redirecionar para uma página de lista ou inicial
+
+    funcionario = {
+        'nome': funcionario[1],
+        'email': funcionario[2],
+        'senha': funcionario[3],
+        'especialidade': funcionario[4]
+    }
+    
+    return render_template('buscar_funcionario.html', id=id, funcionario=funcionario)
 
 if __name__ == '__main__':
     app.config['TEMPLATES_AUTO_RELOAD'] = True

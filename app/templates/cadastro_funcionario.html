@@ -1,33 +1,99 @@
-{% extends "base.html" %}
+{% extends "base.html" %} {% block title %}Cadastro de Funcionários{% endblock
+%} {% block content %}
 
-{% block title %}Cadastro de Funcionários{% endblock %}
+<script>
+  document.addEventListener("DOMContentLoaded", (event) => {
+    document.addEventListener("click", function (e) {
+      if (e.target && e.target.matches(".result-item-funcionarios")) {
+        document.getElementById("funcionario_id").value = e.target.dataset.id;
 
-{% block content %}
+        document.getElementById("search_funcionarios").value =
+          e.target.innerText;
+        document.getElementById("results_funcionarios").innerHTML = "";
+
+        document
+          .getElementById("fetch_funcionario_form")
+          .setAttribute("hx-get", `/funcionario/${e.target.dataset.id}`);
+        document.getElementById(
+          "fetch_funcionario_form"
+        ).action = `/funcionario/${e.target.dataset.id}`;
+
+        htmx.process(document.body);
+
+        document
+          .getElementById("fetch_funcionario_form")
+          .dispatchEvent(
+            new Event("submit", { bubbles: true, cancelable: true })
+          );
+      }
+    });
+
+    document
+      .getElementById("clear_search")
+      .addEventListener("click", function () {
+        document.getElementById("search_funcionarios").value = "";
+        document.getElementById("results_funcionarios").innerHTML = "";
+        document.getElementById("funcionario_id").value = "";
+
+        // Clear form fields
+        const form = document.getElementById("form");
+        form.reset();
+      });
+  });
+</script>
+
 <div class="bg-white p-8 rounded-xl shadow-md">
-    <h1 class="text-2xl font-bold mb-6">Cadastro de Funcionários</h1>
-    <form id="form" hx-post="/funcionario/inserir" hx-target="#result" hx-swap="innerHTML">
-        <div class="mb-4 flex space-x-4">
-            <div class="w-1/2">
-                <label for="nome" class="block text-gray-700">Nome:</label>
-                <input type="text" id="nome" name="nome" class="w-full p-2 border border-gray-300 rounded mt-1" required>
-            </div>
-            <div class="w-1/2">
-                <label for="especialidade" class="block text-gray-700">Especialidade:</label>
-                <input type="text" id="especialidade" name="especialidade" class="w-full p-2 border border-gray-300 rounded mt-1">
-            </div>
-        </div>
-        <div class="mb-4">
-            <label for="email" class="block text-gray-700">Email:</label>
-            <input type="email" id="email" name="email" class="w-full p-2 border border-gray-300 rounded mt-1" required>
-        </div>
-        <div class="mb-4">
-            <label for="senha" class="block text-gray-700">Senha:</label>
-            <input type="password" id="senha" name="senha" class="w-full p-2 border border-gray-300 rounded mt-1" required>
-        </div>
-        <div class="flex justify-end">
-            <button type="submit" class="bg-blue-500 text-white p-2 rounded">Cadastrar</button>
-        </div>
+  <h1 class="text-2xl font-bold mb-6">Cadastro de Funcionários</h1>
+  <div class="flex items-center space-x-2 mb-4">
+    <div class="flex-grow">
+      <label class="text-xl font-semibold mb-4 block">Pesquisar</label>
+      <input type="hidden" id="funcionario_id" name="funcionario_id" />
+      <input
+        type="text"
+        id="search_funcionarios"
+        name="search_funcionarios"
+        placeholder="Buscar funcionario..."
+        hx-get="/search_funcionarios"
+        hx-trigger="input changed delay:500ms"
+        hx-target="#results_funcionarios"
+        hx-swap="innerHTML"
+        class="w-full p-2 border border-gray-300 rounded-md"
+      />
+      <div id="results_funcionarios" class="relative mt-2"></div>
+    </div>
+    <form
+      id="clear_form"
+      hx-post="/funcionario/novo"
+      hx-target="#patient_form_container"
+      hx-swap="innerHTML"
+      class="flex items-center"
+    >
+      <button
+        id="clear_search"
+        type="submit"
+        class="bg-gray-500 text-white p-2 rounded focus:outline-none"
+      >
+        X
+      </button>
     </form>
-    <div id="result" class="mt-4"></div>
+  </div>
+
+  <hr
+    class="w-48 h-1 mx-auto my-4 bg-gray-100 border-0 rounded md:my-10 dark:bg-gray-700"
+  />
+  
+  <form
+    id="fetch_funcionario_form"
+    hx-get=""
+    hx-trigger="submit"
+    hx-target="#patient_form_container"
+    hx-swap="innerHTML"
+  ></form>
+
+  <div id="patient_form_container">
+   {% include 'partials/form_funcionario.html' %}
+  </div>
+
+  <div id="result" class="mt-4"></div>
 </div>
 {% endblock %}
