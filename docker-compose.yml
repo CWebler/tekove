@@ -24,7 +24,7 @@ services:
     environment:
       FLASK_APP: app.py
       FLASK_ENV: development
-      POSTGRES_URL: postgres://tekove:tekove123@db:5432/tekove
+      DATABASE_URL: postgres://tekove:tekove123@db:5432/tekove
     volumes:
       - ./app:/app
     ports:
