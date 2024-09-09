@@ -15,7 +15,7 @@ from functools import wraps
 app = Flask(__name__)
 app.secret_key = os.environ.get("SECRET_KEY", "alterar")
 
-DATABASE_URL = os.environ.get("DATABASE_URL")
+DATABASE_URL = os.environ.get("POSTGRES_URL")
 
 
 def get_db_connection():
@@ -436,6 +436,6 @@ def logout():
     return redirect(url_for("login"))
 
 
-if __name__ == "__main__":
-    app.config["TEMPLATES_AUTO_RELOAD"] = True
-    app.run(host="0.0.0.0", debug=True)
+# if __name__ == "__main__":
+#     app.config["TEMPLATES_AUTO_RELOAD"] = True
+#     app.run(host="0.0.0.0", debug=True)
